@@ -111,7 +111,8 @@ with st.sidebar:
         if auth_mode == "Login":
             if st.button("Login"):
                 if login_user(email, password):
-                    st.experimental_rerun()
+                    st.session_state["rerun"] = not st.session_state.get("rerun", False)
+                    st.experimental_rerun() 
         else:
             if st.button("Sign up"):
                 signup_user(email, password)
@@ -121,7 +122,8 @@ with st.sidebar:
         st.success(f"Logged in as {email}")
         if st.button("Logout"):
             del st.session_state["user"]
-            st.experimental_rerun()
+            st.session_state["rerun"] = not st.session_state.get("rerun", False)
+            st.experimental_rerun() 
 
     st.write("---")
     st.markdown("### Tips")
