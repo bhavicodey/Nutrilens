@@ -18,7 +18,8 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import pyrebase
 from firebase_frontend_config import firebase_frontend_config
-
+if "reload" not in st.session_state:
+    st.session_state["reload"] = False  # or True, whatever your default is
 # ---------------------------
 #  Streamlit page & theme
 # ---------------------------
