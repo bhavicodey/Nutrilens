@@ -377,6 +377,23 @@ def explain_non_flagged_ingredients(non_flagged_list):
 tab_scan, tab_stats, tab_leaderboard, tab_ingredients = st.tabs(
     ["🏠 Food Scan", "📈 Your Trends", "🏆 Leaderboard", "⚠️ Ingredient Scanner"]
 )
+with tab_stats:
+    if "user" not in st.session_state:
+        st.info("Log in to see your trends 📈")
+    else:
+        user = st.session_state["user"]["email"]
+        stats = fetch_user_history(user)
+        if stats.empty:
+            st.info("No scans yet. Start scanning food to see trends!")
+        else:
+            st.subheader("Your Progress 🌱")
+            st.line_chart(stats.set_index("date")["score"])
+with tab_leaderboard:
+    if "user" not in st.session_state:
+        st.info("Log in to see the leaderboard 🏆")
+    else:
+        show_leaderboard()
+
 
 # --------------------------
 #  SCAN TAB
