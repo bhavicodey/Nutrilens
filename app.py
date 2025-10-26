@@ -378,7 +378,7 @@ def explain_non_flagged_ingredients(non_flagged_list):
 #  Main Tabs Setup
 # ---------------------------
 tab_scan, tab_stats, tab_leaderboard, tab_ingredients = st.tabs(
-    ["🏠 Food Scan", "⚠️ Ingredient Scanner", "📈 Your Trends", "🏆 Leaderboard"]
+    ["🏠 Food Scan", "📈 Your Trends", "🏆 Leaderboard", "⚠️ Ingredient Scanner"]
 )
 with tab_stats:
     if "user" not in st.session_state:
