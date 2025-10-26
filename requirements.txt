@@ -5,3 +5,5 @@ pillow
 requests
 python-dotenv
 openai
+firebase-admin
+pyrebase4
