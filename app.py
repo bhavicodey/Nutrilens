@@ -62,25 +62,15 @@ client = OpenAI(api_key=openai_key)
 # ---------------------------
 #  Firebase setup
 # ---------------------------
-if not firebase_admin._apps:
-    try:
-        # Try local JSON first
-        if os.path.exists("firebaseConfig.json"):
-            cred = credentials.Certificate("firebaseConfig.json")
-            firebase_admin.initialize_app(cred)
-        # Fall back to Streamlit secrets
-        elif "FIREBASE_SERVICE_ACCOUNT" in st.secrets:
-            firebase_creds = st.secrets["FIREBASE_SERVICE_ACCOUNT"]
-            if isinstance(firebase_creds, str):
-                firebase_creds = json.loads(firebase_creds)
-            cred = credentials.Certificate(firebase_creds)
-            firebase_admin.initialize_app(cred)
-        else:
-            st.warning("⚠️ Firebase credentials not found. Firebase features will be disabled.")
-            db = None
-    except Exception as e:
-        st.warning(f"Firebase initialization failed: {e}")
-        db = None
+try:
+    firebase = pyrebase.initialize_app(firebase_frontend_config)
+    auth = firebase.auth()
+    db = firebase.database()
+    st.success("Firebase initialized successfully!")
+except Exception as e:
+    st.error(f"⚠️ Firebase initialization failed: {e}")
+    db = None
+    auth = None
 
 # Only create firestore client if Firebase initialized
 if firebase_admin._apps:
