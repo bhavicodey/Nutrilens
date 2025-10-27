@@ -64,24 +64,22 @@ client = OpenAI(api_key=openai_key)
 #  Firebase setup
 # ---------------------------
 try:
+    # Initialize Pyrebase for user authentication
     firebase = pyrebase.initialize_app(firebase_frontend_config)
     auth = firebase.auth()
-    db = firebase.database()
-    st.success("Firebase initialized successfully!")
+
+    # Initialize Firebase Admin SDK for Firestore
+    if not firebase_admin._apps:
+        cred = credentials.Certificate(dict(st.secrets["FIREBASE"]))
+        firebase_admin.initialize_app(cred)
+
+    db = firestore.client()
+    st.success("✅ Firebase initialized successfully!")
+
 except Exception as e:
     st.error(f"⚠️ Firebase initialization failed: {e}")
     db = None
     auth = None
-
-# Only create firestore client if Firebase initialized
-if firebase_admin._apps:
-    db = firestore.client()
-else:
-    db = None
-
-firebase = pyrebase.initialize_app(firebase_frontend_config)
-auth = firebase.auth()
-
 # ---------------------------
 #  Authentication helpers
 # ---------------------------
